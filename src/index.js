@@ -1,10 +1,11 @@
 module.exports = function solveSudoku(matrix) {
-//console.log(matrix);		
 
+					//check candidate
 					const checkNum = (array, row, col, num) => {
 						for (let i = 0; i < 9; i++) {
 							let m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
 							let n = 3 * Math.floor(col / 3) + i % 3;
+							//check candidate in row, column, square
 							if (array[row][i] == num || array[i][col] == num || array[m][n] == num) {
 								return false;
 							}
@@ -12,6 +13,7 @@ module.exports = function solveSudoku(matrix) {
 						return true;
 					}
 
+					//solve matrix
 					const matrixSolv = (arr) => {
 						//select row
 						for (let i = 0; i < 9; i++) {
@@ -19,11 +21,12 @@ module.exports = function solveSudoku(matrix) {
 							for (let j = 0; j < 9; j++) {
 								//when we have zero
 								if (arr[i][j] == 0) {
-									//determine the candidate
+									//determine candidate
 									for (let k = 1; k <= 9; k++) {
-										if (checkNum(arr, i, j, k)) {
+										//check candidate
+										if (checkNum(arr, i, j, k) == true) {
 											arr[i][j] = k;
-											if (matrixSolv(arr)) {
+											if (matrixSolv(arr) == true) {
 											return true;
 											}
 											else {
