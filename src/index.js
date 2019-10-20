@@ -1,32 +1,48 @@
 module.exports = function solveSudoku(matrix) {
-    let arr = [1,2,3,4,5,6,7,8,9];
-    let zeros = [];
-    let candidat = [];
-    for (let k = 0; k < matrix.length;) {
-      for (let i = 0, sum = 0; i < matrix[0].length; i++) {
-        if (matrix[k].indexOf(arr[i]) != -1) {
+//console.log(matrix);		
 
-        }
-        else {
-          candidat.push(arr[i]);
-        }
-        sum += matrix[k][i];
-        if (matrix[k][i] == 0) {
-          zeros.push(i);
-          let row = [matrix[0][i],matrix[1][i],matrix[2][i],matrix[3][i],
-                    matrix[4][i],matrix[5][i],matrix[6][i],matrix[7][i],
-                    matrix[8][i]];
-          for (n = 0; n < candidat.length; n++) {
-            if (row.indexOf(candidat[n]) != -1) {
+					const checkNum = (array, row, col, num) => {
+						for (let i = 0; i < 9; i++) {
+							let m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
+							let n = 3 * Math.floor(col / 3) + i % 3;
+							if (array[row][i] == num || array[i][col] == num || array[m][n] == num) {
+								return false;
+							}
+						}
+						return true;
+					}
 
-            }
-            else {
-              matrix[k].splice(i, 1, candidat[n]);
-            }
-          }
-        }
-      }
-    k++;
-    return matrix;
-}
+					const matrixSolv = (arr) => {
+						//select row
+						for (let i = 0; i < 9; i++) {
+							//select column
+							for (let j = 0; j < 9; j++) {
+								//when we have zero
+								if (arr[i][j] == 0) {
+									//determine the candidate
+									for (let k = 1; k <= 9; k++) {
+										if (checkNum(arr, i, j, k)) {
+											arr[i][j] = k;
+											if (matrixSolv(arr)) {
+											return true;
+											}
+											else {
+											arr[i][j] = 0;
+											}
+										}
+									}
+									return false;
+								}
+							}
+						}
+					return true;
+					}
+
+					//return complete matrix
+					const solvedArr = (array) => {
+						matrixSolv(array);
+						return array;
+					}
+
+					return solvedArr(matrix);
 }
